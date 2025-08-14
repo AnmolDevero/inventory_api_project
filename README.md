@@ -9,11 +9,8 @@ This project allows authenticated users to perform CRUD operations on products, 
 - **CRUD for Products** (Create, Read, Update, Delete)
 - **Pagination** 
 - **Search by Product Name**
-
-
-## Planned Features
-- Logout endpoint (JWT token blacklist)
-- Delete account endpoint
+- **Logout endpoint** (JWT token blacklist)
+- **Delete account endpoint**
 
 ---
 
@@ -87,6 +84,8 @@ Method	 Endpoint	          Description
 POST	 /api/signup/	      Create a new user
 POST	 /api/token/	      Get JWT access and refresh tokens
 POST	 /api/token/refresh/  Refresh access token
+POST	/api/logout/	        Logout (blacklist refresh token)
+DELETE	/api/delete/account/	Delete the authenticated user's account
 
 Products
 Method	 Endpoint	            Description
@@ -140,4 +139,5 @@ http://127.0.0.1:8000/admin/
 
 # License
 This project is licensed under the MIT License.
+
 
