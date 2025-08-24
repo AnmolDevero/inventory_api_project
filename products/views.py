@@ -10,6 +10,7 @@ from rest_framework.decorators import api_view,permission_classes
 from django.contrib.auth.models import User
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import AllowAny
+from .serializers import ChangePasswordSerializer
 
 
 
@@ -107,6 +108,22 @@ def delete_acount_api(request):
 
 
 
+class ChangePasswordView(APIView):
+    
+    def put(self, request):
+        serializer = ChangePasswordSerializer(data=request.data)
+        
+        if serializer.is_valid():
+            user = request.user
+            old_password = serializer.validated_data['old_password']
+            new_password = serializer.validated_data['new_password']
 
-
+            if not user.check_password(old_password):
+                return Response ({"old_password": "Wrong password."}, status=status.HTTP_400_BAD_REQUEST)
+            
+            user.set_password(new_password)
+            user.save()
+            return Response({"detail": "Password changed successfully"}, status=status.HTTP_200_OK)
+        
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
