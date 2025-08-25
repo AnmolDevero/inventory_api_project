@@ -11,6 +11,7 @@ from django.contrib.auth.models import User
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import AllowAny
 from .serializers import ChangePasswordSerializer
+from django.contrib.auth.password_validation import validate_password
 
 
 
@@ -96,10 +97,14 @@ def signup_api(request):
     if User.objects.filter(username=username).exists():
         return Response ({'error':'user already exists'}, status=status.HTTP_400_BAD_REQUEST)
     
-    if len(password) < 6:
-        return Response({'error': 'Password is too short'}, status=status.HTTP_400_BAD_REQUEST)
+    try:
+        validate_password(password)
+    except Exception as e:
+        return Response({'password': list(e.messages)}, status=status.HTTP_400_BAD_REQUEST)
+
     user = User.objects.create_user (username=username, password=password)
     return Response ({'message':'user created successfully'}, status=status.HTTP_201_CREATED)
+
 
 @api_view(['POST'])
 def delete_acount_api(request):
@@ -121,6 +126,11 @@ class ChangePasswordView(APIView):
             if not user.check_password(old_password):
                 return Response ({"old_password": "Wrong password."}, status=status.HTTP_400_BAD_REQUEST)
             
+            try:
+                validate_password(new_password, user)
+            except Exception as e:
+                return Response({"new_password":list(e.messages)}, status=status.HTTP_400_BAD_REQUEST)
+
             user.set_password(new_password)
             user.save()
             return Response({"detail": "Password changed successfully"}, status=status.HTTP_200_OK)
