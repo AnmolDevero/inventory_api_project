@@ -1,6 +1,7 @@
 from django.shortcuts import render,redirect
 
 # Create your views here.
+
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -20,13 +21,21 @@ class ProductListCreateView(APIView): # class-based view for listing and creatin
     def get(self, request):
         get_products = Product.objects.filter(user=request.user)
 
-        paginator = PageNumberPagination()
-        paginator.page_size = 3
-        products = paginator.paginate_queryset(get_products, request)
+        in_stock = request.query_params.get('in_stock', None)
+        if in_stock is not None:
+            get_products = get_products.filter(in_stock=in_stock)
 
         search = request.query_params.get('search', None)
         if search:
-            products = products.filter(name__icontains=search)
+            get_products = get_products.filter(name__icontains=search)
+
+        ordering = request.query_params.get('ordering', None)
+        if ordering:
+            get_products = get_products.order_by(ordering)
+        
+        paginator = PageNumberPagination()
+        paginator.page_size = 3
+        products = paginator.paginate_queryset(get_products, request)
 
         serializer = ProductSerializer(products, many=True)
         return Response (serializer.data)

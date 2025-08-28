@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'products', # Added manually
     'rest_framework', # Added manually
     'rest_framework_simplejwt.token_blacklist', # Added manually
+    'django_filters' # Added manually
 ]
 
 MIDDLEWARE = [
@@ -130,8 +131,19 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Added manually
 REST_FRAMEWORK = {
+    
     'DEFAULT_AUTHENTICATION_CLASSES' : ['rest_framework_simplejwt.authentication.JWTAuthentication'],
+    
     'DEFAULT_PERMISSION_CLASSES' : ['rest_framework.permissions.IsAuthenticated'],
+
+    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
+    "PAGE_SIZE": 3,  
+    
+    'DEFAULT_FILTER_BACKENDS': [
+        'rest_framework.filters.SearchFilter',
+        'rest_framework.filters.OrderingFilter',
+        'django_filters.rest_framework.DjangoFilterBackend',
+    ]
 }
 
 
