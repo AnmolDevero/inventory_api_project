@@ -8,7 +8,7 @@ This project allows authenticated users to perform CRUD operations on products, 
 - **User Authentication** (JWT-based login & signup)
 - **CRUD for Products** (Create, Read, Update, Delete)
 - **Pagination** 
-- **Search by Product Name**
+- **Filtering, Searching, and Ordering on Products**
 - **Logout endpoint** (JWT token blacklist)
 - **Delete account endpoint**
 
@@ -91,10 +91,10 @@ Products
 Method	 Endpoint	            Description
 GET	     /api/products/	        List all products (paginated)
 POST	 /api/products/	        Create a new product
-GET	     /api/products/{id}/	Retrieve a specific product
-PUT	     /api/products/{id}/	Update a product
-patch    /api/products/{id}/    
-DELETE	 /api/products/{id}/	Delete a product
+GET	     /api/product/{id}/	Retrieve a specific product
+PUT	     /api/product/{id}/	Update a product
+patch    /api/product/{id}/    
+DELETE	 /api/product/{id}/	Delete a product
 
 ---
 

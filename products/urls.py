@@ -3,10 +3,6 @@ from rest_framework.routers import DefaultRouter
 
 
 
-
-# 4 check views & add commit push
-
-
 # APIView imports
 from .views import (ProductListCreateView, ProductDetailView,
                     signup_api, delete_acount_api, ChangePasswordView)
